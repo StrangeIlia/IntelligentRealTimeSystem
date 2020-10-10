@@ -49,6 +49,16 @@ SatelliteMessagesContainer::AllMessages SatelliteMessagesContainer::messages() c
     return _messages;
 }
 
+int SatelliteMessagesContainer::messageCount() const {
+    int count = 0;
+    for(auto messagesInDay : _messages) {
+        for(auto messagesInTime : messagesInDay) {
+            count += messagesInTime.size();
+        }
+    }
+    return count;
+}
+
 NavigationMessage *SatelliteMessagesContainer::message(int satelliteNumber, QDateTime tpc) const {
     if(!_messages.contains(tpc.date())) return nullptr;
     auto &messagesInOneDay = _messages[tpc.date()];

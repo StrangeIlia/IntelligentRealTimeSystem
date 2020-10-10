@@ -11,8 +11,8 @@ class LoadFilesWithEphemerisTask : public QObject, public QRunnable
 {
     Q_OBJECT
 public:
-    LoadFilesWithEphemerisTask(QString fileName);
-    LoadFilesWithEphemerisTask(QStringList listFileNames);
+    LoadFilesWithEphemerisTask(QString fileName, QObject *parent = nullptr);
+    LoadFilesWithEphemerisTask(QStringList listFileNames, QObject *parent = nullptr);
 
     void run() override;
 

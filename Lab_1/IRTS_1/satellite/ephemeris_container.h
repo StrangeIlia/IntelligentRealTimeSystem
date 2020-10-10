@@ -24,9 +24,14 @@ public:
     bool memoryControlEnabled() const;
     void setMemoryControl(bool value);
 
-    void addEphemeris(Ephemeris *ephemeris);
+    bool addEphemeris(Ephemeris *ephemeris);
     void removeEphemeris(Ephemeris *ephemeris);
     AllEphemeris allEphemeris() const;
+
+    bool containsDate(QDate date) const;
+    bool containeDateTime(QDateTime datetime) const;
+
+    int ephemerisCount() const;
 
     /// Возвращает сообщение
     /// Если такого сообщения нет, вернет nullptr

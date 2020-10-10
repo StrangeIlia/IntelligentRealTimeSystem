@@ -37,7 +37,7 @@
            <widget class="QTextEdit" name="console"/>
           </item>
           <item>
-           <widget class="QPushButton" name="clearResults">
+           <widget class="QPushButton" name="clearConsole">
             <property name="text">
              <string>Очистить поле вывода</string>
             </property>

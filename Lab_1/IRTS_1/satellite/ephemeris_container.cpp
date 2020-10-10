@@ -22,13 +22,14 @@ void EphemerisContainer::setMemoryControl(bool value) {
     _memoryControl = value;
 }
 
-void EphemerisContainer::addEphemeris(Ephemeris *ephemeris) {
+bool EphemerisContainer::addEphemeris(Ephemeris *ephemeris) {
     if(!_ephemeris.contains(ephemeris->dateTime.date())) {
         _ephemeris.insert(ephemeris->dateTime.date(), EphemerisInOneDay());
     }
     auto &ephemerisInOneDay = _ephemeris[ephemeris->dateTime.date()];
     if(!ephemerisInOneDay.contains(ephemeris->dateTime.time())) {
         ephemerisInOneDay.insert(ephemeris->dateTime.time(), ephemeris);
+        return true;
     } else {
         auto &ephemerisInTime = ephemerisInOneDay[ephemeris->dateTime.time()];
         for(
@@ -37,6 +38,7 @@ void EphemerisContainer::addEphemeris(Ephemeris *ephemeris) {
             ++iter) {
             ephemerisInTime->satelliteInfo.insert(iter.key(), iter.value());
         }
+        return false;
     }
 }
 
@@ -57,6 +59,23 @@ void EphemerisContainer::removeEphemeris(Ephemeris *ephemeris) {
 
 EphemerisContainer::AllEphemeris EphemerisContainer::allEphemeris() const {
     return _ephemeris;
+}
+
+bool EphemerisContainer::containsDate(QDate date) const {
+    return _ephemeris.contains(date);
+}
+
+bool EphemerisContainer::containeDateTime(QDateTime datetime) const {
+    if(!_ephemeris.contains(datetime.date())) return false;
+    return _ephemeris[datetime.date()].contains(datetime.time());
+}
+
+int EphemerisContainer::ephemerisCount() const {
+    int count = 0;
+    for(auto inOneDay : _ephemeris) {
+        count += inOneDay.size();
+    }
+    return count;
 }
 
 Ephemeris *EphemerisContainer::ephemeris(QDateTime tpc) const {

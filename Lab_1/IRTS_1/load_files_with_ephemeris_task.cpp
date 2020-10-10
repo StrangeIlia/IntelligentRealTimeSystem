@@ -1,11 +1,11 @@
 #include "load_files_with_ephemeris_task.h"
 
-LoadFilesWithEphemerisTask::LoadFilesWithEphemerisTask(QString fileName) {
+LoadFilesWithEphemerisTask::LoadFilesWithEphemerisTask(QString fileName, QObject *parent) : QObject(parent) {
     setAutoDelete(false);
     _listFileNames.push_back(fileName);
 }
 
-LoadFilesWithEphemerisTask::LoadFilesWithEphemerisTask(QStringList listFileNames) {
+LoadFilesWithEphemerisTask::LoadFilesWithEphemerisTask(QStringList listFileNames, QObject *parent) : QObject(parent) {
     setAutoDelete(false);
     _listFileNames = listFileNames;
 }

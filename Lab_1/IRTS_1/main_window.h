@@ -7,6 +7,8 @@
 #include <QThreadPool>
 #include <QErrorMessage>
 
+#include "calculate_task.h"
+#include "create_html_task.h"
 #include "dialog_processing.h"
 #include "load_files_with_ephemeris_task.h"
 #include "load_files_with_message_stask.h"

@@ -28,6 +28,8 @@ public:
     void removeMessage(NavigationMessage *message);
     AllMessages messages() const;
 
+    int messageCount() const;
+
     /// Возвращает сообщение
     /// Если такого сообщения нет, вернет nullptr
     NavigationMessage *message(int satelliteNumber, QDateTime tpc) const;

@@ -16,6 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    calculate_task.cpp \
+    create_html_task.cpp \
     dialog_processing.cpp \
     load_files_with_ephemeris_task.cpp \
     load_files_with_message_stask.cpp \
@@ -24,12 +26,13 @@ SOURCES += \
     main_window.cpp \
     parser_ephemeris.cpp \
     parser_of_navigation_messages.cpp \
-    result_form.cpp \
     satellite/ephemeris_container.cpp \
     satellite/position_calculator.cpp \
     satellite/satellite_messages_container.cpp
 
 HEADERS += \
+    calculate_task.h \
+    create_html_task.h \
     dialog_processing.h \
     load_files_with_ephemeris_task.h \
     load_files_with_message_stask.h \
@@ -40,14 +43,12 @@ HEADERS += \
     main_window.h \
     parser_ephemeris.h \
     parser_of_navigation_messages.h \
-    result_form.h \
     satellite/position_calculator.h \
     satellite/satellite_messages_container.h
 
 FORMS += \
     dialog_processing.ui \
-    main_window.ui \
-    result_form.ui
+    main_window.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
