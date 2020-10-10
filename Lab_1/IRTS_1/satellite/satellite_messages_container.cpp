@@ -73,7 +73,7 @@ NavigationMessage *SatelliteMessagesContainer::nearbyMessage(int satelliteNumber
     auto &messagesInOneDay = _messages[tpc.date()];
     auto greaterTime = messagesInOneDay.lowerBound(tpc.time());
     auto lowerTime = greaterTime == messagesInOneDay.begin() ? greaterTime : greaterTime - 1;
-    ++greaterTime;
+    if(greaterTime != messagesInOneDay.end()) ++greaterTime;
     while(lowerTime != greaterTime) {
         if(lowerTime.value().contains(satelliteNumber)) {
             break;

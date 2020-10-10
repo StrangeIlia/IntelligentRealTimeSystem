@@ -1,6 +1,7 @@
 #ifndef POSITIONCALCULATOR_H
 #define POSITIONCALCULATOR_H
 
+#include <QDebug>
 #include "calculation.h"
 #include "satellite_messages_container.h"
 

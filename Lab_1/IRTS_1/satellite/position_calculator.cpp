@@ -17,6 +17,12 @@ CalculatedData *PositionCalculator::calculate(int satelliteNumber, QDateTime TPC
     NavigationMessage *message = _container->nearbyMessage(satelliteNumber, TPC);
     if(message == nullptr) return nullptr;
 
+    if(message->satelliteNumber == 8) {
+        int a = 8;
+        qDebug() << TPC;
+        qDebug() << message->TOC;
+    }
+
     CalculatedData *calculated = new CalculatedData;
     timeSinceTheBeginningOfTheWeek(calculated, message, TPC.time());
     timeSinceEra(calculated, message);

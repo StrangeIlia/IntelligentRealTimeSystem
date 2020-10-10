@@ -13,7 +13,7 @@ CreateHtmlTask::CreateHtmlTask(EphemerisContainer *calculatedEphemeris,
 
 void CreateHtmlTask::run() {
     QTextStream out(&_html);
-    out.setRealNumberPrecision(5);
+    out.setRealNumberPrecision(3);
     out.setRealNumberNotation(QTextStream::FixedNotation);
 
     out << "-----------------------------------<br><br>";
@@ -70,12 +70,12 @@ void CreateHtmlTask::run() {
                 if(reqExp) {
                     if(rEphemeris->satelliteInfo.contains(iter.key())) {
                         auto info = rEphemeris->satelliteInfo[iter.key()];
-                        out <<     "<td>"; out << info.x / 1000; out << tr("км</td>");
-                        out <<     "<td>"; out << info.y / 1000; out << tr("км</td>");
-                        out <<     "<td>"; out << info.z / 1000; out << tr("км</td>");
-                        out <<     "<td>"; out << (info.x - iter->x) * 1000; out << tr("м</td>");
-                        out <<     "<td>"; out << (info.y - iter->y) * 1000; out << tr("м</td>");
-                        out <<     "<td>"; out << (info.z - iter->z) * 1000; out << tr("м</td>");
+                        out <<     "<td>"; out << info.x; out << tr("км</td>");
+                        out <<     "<td>"; out << info.y; out << tr("км</td>");
+                        out <<     "<td>"; out << info.z; out << tr("км</td>");
+                        out <<     "<td>"; out << info.x * 1000 - iter->x; out << tr("м</td>");
+                        out <<     "<td>"; out << info.y * 1000 - iter->y; out << tr("м</td>");
+                        out <<     "<td>"; out << info.z * 1000 - iter->z; out << tr("м</td>");
                     } else {
                         out <<     "<td>nan</td>";
                         out <<     "<td>nan</td>";
