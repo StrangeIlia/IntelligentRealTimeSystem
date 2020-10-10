@@ -16,25 +16,36 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    dialog_processing.cpp \
+    load_files_with_ephemeris_task.cpp \
+    load_files_with_message_stask.cpp \
     satellite/calculation.cpp \
     main.cpp \
     main_window.cpp \
     parser_ephemeris.cpp \
     parser_of_navigation_messages.cpp \
     result_form.cpp \
-    satellite/position_calculator.cpp
+    satellite/ephemeris_container.cpp \
+    satellite/position_calculator.cpp \
+    satellite/satellite_messages_container.cpp
 
 HEADERS += \
+    dialog_processing.h \
+    load_files_with_ephemeris_task.h \
+    load_files_with_message_stask.h \
     satellite/calculation.h \
     satellite/ephemeris.h \
+    satellite/ephemeris_container.h \
     satellite/navigation_message.h \
     main_window.h \
     parser_ephemeris.h \
     parser_of_navigation_messages.h \
     result_form.h \
-    satellite/position_calculator.h
+    satellite/position_calculator.h \
+    satellite/satellite_messages_container.h
 
 FORMS += \
+    dialog_processing.ui \
     main_window.ui \
     result_form.ui
 
