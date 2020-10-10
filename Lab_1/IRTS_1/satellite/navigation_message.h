@@ -31,7 +31,6 @@ struct NavigationMessage {
     double timeShift;
     double timeShiftVelocity;
     double timeShiftAcceleration;
-    double correctedTOE; /// Без корректирования равен TOE
 };
 
 #endif // NAVIGATION_MESSAGE_H

@@ -12,7 +12,7 @@ public:
     ParserOfNavigationMessages();
 
     NavigationMessage* convertBlock(QString str) const;
-    QVector<NavigationMessage*> convertFile(QTextStream &stream);
+    QVector<NavigationMessage*> convertStream(QTextStream &stream);
 
 private:
     QString getLine(QTextStream &stream) const;

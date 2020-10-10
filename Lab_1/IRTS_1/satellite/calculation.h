@@ -25,19 +25,18 @@ struct CalculatedData {
     double satellitePosZ; // Ysvk
 };
 
-void correctTOE(NavigationMessage *ephemeric);
-void timeSinceTheBeginningOfTheWeek(CalculatedData *calculated, NavigationMessage *ephemeric, QTime TPC);
-void timeSinceEra(CalculatedData *calculated, NavigationMessage *ephemeric);
-void correctedAverageMovement(CalculatedData *calculated, NavigationMessage *ephemeric);
-void meanAnomaly(CalculatedData *calculated, NavigationMessage *ephemeric);
-void eccentricAnomaly(CalculatedData *calculated, NavigationMessage *ephemeric);
-void trueAnomaly(CalculatedData *calculated, NavigationMessage *ephemeric);
-void latitudeArgument(CalculatedData *calculated, NavigationMessage *ephemeric);
-void correctedLatitudeArgument(CalculatedData *calculated, NavigationMessage *ephemeric);
-void correctedRadiusVector(CalculatedData *calculated, NavigationMessage *ephemeric);
-void correctedInclinationAngle(CalculatedData *calculated, NavigationMessage *ephemeric);
+void timeSinceTheBeginningOfTheWeek(CalculatedData *calculated, NavigationMessage *message, QTime TPC);
+void timeSinceEra(CalculatedData *calculated, NavigationMessage *message);
+void correctedAverageMovement(CalculatedData *calculated, NavigationMessage *message);
+void meanAnomaly(CalculatedData *calculated, NavigationMessage *message);
+void eccentricAnomaly(CalculatedData *calculated, NavigationMessage *message);
+void trueAnomaly(CalculatedData *calculated, NavigationMessage *message);
+void latitudeArgument(CalculatedData *calculated, NavigationMessage *message);
+void correctedLatitudeArgument(CalculatedData *calculated, NavigationMessage *message);
+void correctedRadiusVector(CalculatedData *calculated, NavigationMessage *message);
+void correctedInclinationAngle(CalculatedData *calculated, NavigationMessage *message);
 void orbitalSatellitePosition(CalculatedData *calculated);
-void correcntedLongitude(CalculatedData *calculated, NavigationMessage *ephemeric);
+void correcntedLongitude(CalculatedData *calculated, NavigationMessage *message);
 void satellitePosition(CalculatedData *calculated);
 
 #endif // SATELLITE_H

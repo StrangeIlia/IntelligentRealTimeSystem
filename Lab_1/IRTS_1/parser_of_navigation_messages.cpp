@@ -57,7 +57,6 @@ NavigationMessage* ParserOfNavigationMessages::convertBlock(QTextStream &stream)
     result->semiMajorAxis           = std::pow(result->semiMajorAxis, 2);
     str = getLine(stream); str.remove(0, 3);
     result->TOE                     = str.left(doubleLength).toDouble();    str.remove(0, doubleLength);
-    result->correctedTOE            = result->TOE;
     result->CIC                     = str.left(doubleLength).toDouble();    str.remove(0, doubleLength);
     result->ascendingNodeLongitude  = str.left(doubleLength).toDouble();    str.remove(0, doubleLength);
     result->CIS                     = str.left(doubleLength).toDouble();    str.remove(0, doubleLength);
@@ -118,7 +117,6 @@ NavigationMessage* ParserOfNavigationMessages::convertBlock(QString str) const {
     result->semiMajorAxis           = std::pow(result->semiMajorAxis, 2);
     str.remove(0, 3);
     result->TOE                     = str.left(doubleLength).toDouble();    str.remove(0, doubleLength);
-    result->correctedTOE            = result->TOE;
     result->CIC                     = str.left(doubleLength).toDouble();    str.remove(0, doubleLength);
     result->ascendingNodeLongitude  = str.left(doubleLength).toDouble();    str.remove(0, doubleLength);
     result->CIS                     = str.left(doubleLength).toDouble();    str.remove(0, doubleLength);
@@ -133,7 +131,7 @@ NavigationMessage* ParserOfNavigationMessages::convertBlock(QString str) const {
     return result;
 }
 
-QVector<NavigationMessage*> ParserOfNavigationMessages::convertFile(QTextStream &stream) {
+QVector<NavigationMessage*> ParserOfNavigationMessages::convertStream(QTextStream &stream) {
     /// Нас интересуют только данные спутников
     QString str; while(!stream.atEnd() && !str.contains("END OF HEADER")) str = stream.readLine();
 

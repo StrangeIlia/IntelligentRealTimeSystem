@@ -21,7 +21,8 @@ SOURCES += \
     main_window.cpp \
     parser_ephemeris.cpp \
     parser_of_navigation_messages.cpp \
-    result_form.cpp
+    result_form.cpp \
+    satellite/position_calculator.cpp
 
 HEADERS += \
     satellite/calculation.h \
@@ -30,7 +31,8 @@ HEADERS += \
     main_window.h \
     parser_ephemeris.h \
     parser_of_navigation_messages.h \
-    result_form.h
+    result_form.h \
+    satellite/position_calculator.h
 
 FORMS += \
     main_window.ui \
