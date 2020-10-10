@@ -16,14 +16,22 @@ void LoadFilesWithEphemerisTask::run() {
         QFile file(fileName);
         file.open(QFile::ReadOnly);
         QTextStream stream(&file);
-        auto result = parser.convertStream(stream);
-        for(auto ephemeris : result) {
-            _ephemeris.push_back(ephemeris);
+        try {
+            auto result = parser.convertStream(stream);
+            for(auto ephemeris : result) {
+                _ephemeris.push_back(ephemeris);
+            }
+        } catch (std::exception) {
+            break;
         }
         ++_countReadedFiles;
         file.close();
     }
     emit readFinished();
+}
+
+bool LoadFilesWithEphemerisTask::ok() const {
+    return _countReadedFiles == _listFileNames.size();
 }
 
 int LoadFilesWithEphemerisTask::countReadedFiles() const {

@@ -5,7 +5,7 @@
 #include <QStringList>
 #include <QFileDialog>
 #include <QThreadPool>
-
+#include <QErrorMessage>
 
 #include "dialog_processing.h"
 #include "load_files_with_ephemeris_task.h"
@@ -30,6 +30,7 @@ private slots:
     void loadFilesWithEphemeris(bool ignored);
     void calculateAllData(bool ignored);
     void calculateSelectedDateTime(bool ignored);
+    void clearConsole(bool ignored);
 
 private:
     Ui::MainWindow *ui;

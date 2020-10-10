@@ -34,7 +34,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QTextEdit" name="result"/>
+           <widget class="QTextEdit" name="console"/>
           </item>
           <item>
            <widget class="QPushButton" name="clearResults">

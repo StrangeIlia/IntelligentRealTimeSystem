@@ -6,6 +6,7 @@ ParserEphemeris::ParserEphemeris() {
 
 QVector<Ephemeris*> ParserEphemeris::convertStream(QTextStream &stream) const {
     QString str = "123"; while(!stream.atEnd() && str.front() != "*") str = stream.readLine();
+    if(stream.atEnd()) throw std::invalid_argument("File is broken");
 
     QVector<Ephemeris*> result;
     while(!stream.atEnd()) {

@@ -39,6 +39,11 @@ void MainWindow::loadFilesWithMessages(bool /*ignored*/) {
     for(auto message : task->messages()) {
         messagesContainer->addMessage(message);
     }
+    if(!task->ok()) {
+        QErrorMessage *message = new QErrorMessage(this);
+        message->setWindowTitle(tr("Ошибка при выполнении"));
+        message->showMessage(tr("Ошибка при чтении файла \"") + listFileNames[task->countReadedFiles()] + "\"", tr("Чтение файла"));
+    }
     task->deleteLater();
     timer->deleteLater();
     dialog->deleteLater();
@@ -56,11 +61,15 @@ void MainWindow::loadFilesWithEphemeris(bool /*ignored*/) {
     });
     threadPool->start(task);
     timer->start(1000);
-    dialog->setModal(true);
     dialog->exec();
     timer->stop();
     for(auto ephemeris : task->ephemeris()) {
         ephemerisContainer->addEphemeris(ephemeris);
+    }
+    if(!task->ok()) {
+        QErrorMessage *message = new QErrorMessage(this);
+        message->setWindowTitle(tr("Ошибка при выполнении"));
+        message->showMessage(tr("Ошибка при чтении файла \"") + listFileNames[task->countReadedFiles()] + "\"", tr("Чтение файла"));
     }
     task->deleteLater();
     timer->deleteLater();
@@ -73,4 +82,8 @@ void MainWindow::calculateAllData(bool /*ignored*/) {
 
 void MainWindow::calculateSelectedDateTime(bool /*ignored*/) {
 
+}
+
+void MainWindow::clearConsole(bool /*ignored*/) {
+    ui->result->document()->setHtml("");
 }

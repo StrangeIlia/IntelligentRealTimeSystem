@@ -16,6 +16,8 @@ public:
 
     void run() override;
 
+    bool ok() const;
+
     int countReadedFiles() const;
     int countReadedMessages() const;
     QStringList listFileNames() const;

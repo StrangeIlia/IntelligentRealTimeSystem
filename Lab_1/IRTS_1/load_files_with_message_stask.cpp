@@ -16,14 +16,22 @@ void LoadFilesWithMessagesTask::run() {
         QFile file(fileName);
         file.open(QFile::ReadOnly);
         QTextStream stream(&file);
-        auto result = parser.convertStream(stream);
-        for(auto message : result) {
-            _messages.push_back(message);
+        try {
+            auto result = parser.convertStream(stream);
+            for(auto message : result) {
+                _messages.push_back(message);
+            }
+        } catch (std::exception) {
+            break;
         }
         ++_countReadedFiles;
         file.close();
     }
     emit readFinished();
+}
+
+bool LoadFilesWithMessagesTask::ok() const {
+    return _countReadedFiles == _listFileNames.size();
 }
 
 int LoadFilesWithMessagesTask::countReadedFiles() const {

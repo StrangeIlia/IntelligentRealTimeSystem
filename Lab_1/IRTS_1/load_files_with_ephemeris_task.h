@@ -16,6 +16,9 @@ public:
 
     void run() override;
 
+    /// Возвращает истина, если чтение успешно
+    bool ok() const;
+
     int countReadedFiles() const;
     int countReadedEphemeris() const;
     QStringList listFileNames() const;
