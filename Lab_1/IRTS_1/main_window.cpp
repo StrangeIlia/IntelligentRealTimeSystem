@@ -111,7 +111,8 @@ void MainWindow::calculateAllData(bool /*ignored*/) {
     disconnect(connection);
 
     delete calculateTask->results();
-    ui->console->document()->setHtml(createHtmlTask->html());
+    auto lastHtml = ui->console->document()->toHtml();
+    ui->console->document()->setHtml(lastHtml + createHtmlTask->html());
 
     timer->deleteLater();
     dialog->deleteLater();
@@ -120,7 +121,53 @@ void MainWindow::calculateAllData(bool /*ignored*/) {
 }
 
 void MainWindow::calculateSelectedDateTime(bool /*ignored*/) {
+    auto lastHtml = ui->console->document()->toHtml();
+    QDateTime datetime = ui->dateTimeEdit->dateTime();
+    PositionCalculator calculator(messagesContainer);
+    int satelliteNumber = ui->satelliteNumber->value();
+    auto data = calculator.calculate(satelliteNumber, datetime);
+    if(data == nullptr) {
+        QString str = "<br><br>-----------------------------------<br>";
+        str += tr("Не удалось просчитать положения спутника №");
+        str += QString::number(satelliteNumber);
+        str += tr(" для даты ") + datetime.date().toString("dd.MM.yyyy");
+        str += tr(" и времени ") + datetime.time().toString("HH.mm.ss");
+        ui->console->document()->setHtml(lastHtml + str);
+        return;
+    }
 
+    Ephemeris *ephemeris = new Ephemeris();
+    ephemeris->dateTime = datetime;
+    SatelliteInfo info;
+    info.x = data->satellitePosX;
+    info.y = data->satellitePosY;
+    info.z = data->satellitePosZ;
+    ephemeris->satelliteInfo[satelliteNumber] = info;
+    EphemerisContainer *container = new EphemerisContainer();
+    container->addEphemeris(ephemeris);
+
+    QTimer *timer = new QTimer(this);
+    DialogProcessing *dialog = new DialogProcessing(tr("Подготовка данных к выводу"), this);
+    CreateHtmlTask *createHtmlTask = new CreateHtmlTask(container, ephemerisContainer);
+    int countEphemeris = 1;
+    connect(createHtmlTask, &CreateHtmlTask::finished, dialog, &DialogProcessing::close);
+    auto connection = connect(timer, &QTimer::timeout, [countEphemeris, dialog, createHtmlTask]() {
+        dialog->setPersent(1.0 * createHtmlTask->countOfProccessing() / countEphemeris);
+    });
+    threadPool->start(createHtmlTask);
+    timer->start(20);
+    dialog->exec();
+    timer->stop();
+    disconnect(connection);
+
+
+    ui->console->document()->setHtml(lastHtml + createHtmlTask->html());
+
+    delete data;
+    delete container;
+    timer->deleteLater();
+    dialog->deleteLater();
+    createHtmlTask->deleteLater();
 }
 
 void MainWindow::clearConsole(bool /*ignored*/) {
