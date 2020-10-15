@@ -111,8 +111,7 @@ void MainWindow::calculateAllData(bool /*ignored*/) {
     disconnect(connection);
 
     delete calculateTask->results();
-    auto lastHtml = ui->console->document()->toHtml();
-    ui->console->document()->setHtml(lastHtml + createHtmlTask->html());
+    printString(createHtmlTask->html());
 
     timer->deleteLater();
     dialog->deleteLater();
@@ -121,18 +120,16 @@ void MainWindow::calculateAllData(bool /*ignored*/) {
 }
 
 void MainWindow::calculateSelectedDateTime(bool /*ignored*/) {
-    auto lastHtml = ui->console->document()->toHtml();
     QDateTime datetime = ui->dateTimeEdit->dateTime();
     PositionCalculator calculator(messagesContainer);
     int satelliteNumber = ui->satelliteNumber->value();
     auto data = calculator.calculate(satelliteNumber, datetime);
     if(data == nullptr) {
-        QString str = "<br><br>-----------------------------------<br>";
-        str += tr("Не удалось просчитать положения спутника №");
+        QString str = tr("Не удалось просчитать положения спутника №");
         str += QString::number(satelliteNumber);
         str += tr(" для даты ") + datetime.date().toString("dd.MM.yyyy");
         str += tr(" и времени ") + datetime.time().toString("HH.mm.ss");
-        ui->console->document()->setHtml(lastHtml + str);
+        printString(str);
         return;
     }
 
@@ -161,13 +158,22 @@ void MainWindow::calculateSelectedDateTime(bool /*ignored*/) {
     disconnect(connection);
 
 
-    ui->console->document()->setHtml(lastHtml + createHtmlTask->html());
+    printString(createHtmlTask->html());
 
     delete data;
     delete container;
     timer->deleteLater();
     dialog->deleteLater();
     createHtmlTask->deleteLater();
+}
+
+void MainWindow::printString(QString html) {
+    QString lastHtml;
+    if(ui->console->document()->toPlainText() != "")
+        lastHtml += ui->console->document()->toHtml() + "<br><br>";
+    lastHtml += "-----------------------------------<br>";
+    lastHtml += html;
+    ui->console->document()->setHtml(lastHtml);
 }
 
 void MainWindow::clearConsole(bool /*ignored*/) {

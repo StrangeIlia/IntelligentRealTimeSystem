@@ -33,6 +33,8 @@ private slots:
     void loadFilesWithEphemeris(bool ignored);
     void calculateAllData(bool ignored);
     void calculateSelectedDateTime(bool ignored);
+
+    void printString(QString html);
     void clearConsole(bool ignored);
 
 private:

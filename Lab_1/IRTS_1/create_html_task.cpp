@@ -16,8 +16,6 @@ void CreateHtmlTask::run() {
     out.setRealNumberPrecision(3);
     out.setRealNumberNotation(QTextStream::FixedNotation);
 
-    out << "<br><br>-----------------------------------<br>";
-
     EphemerisContainer::AllEphemeris readedEphemeris;
     if(_readedEphemeris != nullptr)
         readedEphemeris = _readedEphemeris->allEphemeris();
