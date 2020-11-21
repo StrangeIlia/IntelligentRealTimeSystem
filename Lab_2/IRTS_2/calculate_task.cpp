@@ -7,7 +7,7 @@ CalculateTask::CalculateTask(SatelliteMessagesContainer *container) {
 }
 
 void CalculateTask::run() {
-    SatellitPositionCalculator calculator(_containerMessages);
+    SatellitePositionCalculator calculator(_containerMessages);
     for(auto messagesInOneDay : _containerMessages->messages()) {
         for(auto messagesInOneTime : messagesInOneDay) {
             for(auto message : messagesInOneTime) {

@@ -21,6 +21,7 @@ SOURCES += \
     dialog_processing.cpp \
     load_files_with_ephemeris_task.cpp \
     load_files_with_message_task.cpp \
+    math/matrix/matrix_operations.cpp \
     parser_of_observation_data.cpp \
     satellite/calculation.cpp \
     main.cpp \
@@ -38,6 +39,8 @@ HEADERS += \
     dialog_processing.h \
     load_files_with_ephemeris_task.h \
     load_files_with_message_task.h \
+    math/matrix/MatrixOnRow.hpp \
+    math/matrix/matrix_operations.hpp \
     parser_of_observation_data.h \
     satellite/calculation.h \
     satellite/ephemeris.h \

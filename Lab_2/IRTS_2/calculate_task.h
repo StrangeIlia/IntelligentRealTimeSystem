@@ -4,8 +4,8 @@
 #include <QObject>
 #include <QRunnable>
 
-#include "satellite/satellite_position_calculator.h"
 #include "satellite/ephemeris_container.h"
+#include "satellite/satellite_position_calculator.h"
 
 class CalculateTask : public QObject, public QRunnable
 {

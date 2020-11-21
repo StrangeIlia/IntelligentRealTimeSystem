@@ -3,7 +3,11 @@
 #include <QApplication>
 
 #include <QDebug>
+
 #include "parser_of_observation_data.h"
+#include "parser_of_navigation_messages.h"
+
+#include "satellite/reciever_position_calculator.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,22 +15,43 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-//    QFile file("gls10550.16o");
-//    file.open(QFile::OpenModeFlag::ReadOnly);
-//    QTextStream stream(&file);
-//    ParserOfObservationData parser;
-//    auto vector = parser.convertStream(stream);
+    RecieverData *recieverData;
+    {
+        QFile file("gls10550.16o");
+        file.open(QFile::OpenModeFlag::ReadOnly);
+        QTextStream stream(&file);
+        ParserOfObservationData parser;
+        recieverData = parser.convertStream(stream);
+    }
 
-//    auto data = vector.first();
-//    qDebug() << data->dateTime;
-//    for(auto iter = data->gps.begin(); iter != data->gps.end(); ++iter) {
-//        QString buffer;
-//        QTextStream tmpStream(&buffer);
-//        tmpStream << iter.key() << " " << iter.value().c1;
-//        qDebug() << buffer;
-//    }
+    SatelliteMessagesContainer *container = new SatelliteMessagesContainer();
+    {
+        QFile file("gls10550.16n");
+        file.open(QFile::OpenModeFlag::ReadOnly);
+        QTextStream stream(&file);
+        ParserOfNavigationMessages parser;
+        auto messages = parser.convertStream(stream);
 
-//    for(auto data : vector) delete data;
+        for(auto message : messages) {
+            container->addMessage(message);
+        }
+    }
+
+    RecieverPositionCalculator calculator;
+    auto position = calculator.calculate(recieverData, container);
+
+    QString buffer;
+    QTextStream stream(&buffer);
+    stream << position->x << " " << position->y << " " << position->z;
+    qDebug() << buffer; buffer.clear();
+
+    stream << recieverData->X << " " << recieverData->Y << " " << recieverData->Z;
+    qDebug() << buffer; buffer.clear();
+
+
+
+    delete recieverData;
+    delete container;
 
     return a.exec();
 }

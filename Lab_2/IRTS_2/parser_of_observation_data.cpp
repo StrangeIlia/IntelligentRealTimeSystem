@@ -17,9 +17,9 @@ RecieverData *ParserOfObservationData::convertStream(QTextStream &stream) {
         if(str.contains("APPROX POSITION XYZ")) break;
     }
 
-    result->X = str.left(14).toInt(&ok); if(!ok) throw std::invalid_argument("File is broken"); str.remove(0, 14);
-    result->Y = str.left(14).toInt(&ok); if(!ok) throw std::invalid_argument("File is broken"); str.remove(0, 14);
-    result->Z = str.left(14).toInt(&ok); if(!ok) throw std::invalid_argument("File is broken"); str.remove(0, 14);
+    result->X = str.left(14).toDouble(&ok); if(!ok) throw std::invalid_argument("File is broken"); str.remove(0, 14);
+    result->Y = str.left(14).toDouble(&ok); if(!ok) throw std::invalid_argument("File is broken"); str.remove(0, 14);
+    result->Z = str.left(14).toDouble(&ok); if(!ok) throw std::invalid_argument("File is broken"); str.remove(0, 14);
 
     /// Пропуск не интересных строк
     while(!stream.atEnd()) {
