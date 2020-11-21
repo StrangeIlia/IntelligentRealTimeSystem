@@ -33,7 +33,11 @@ NavigationMessage* ParserOfNavigationMessages::convertBlock(QTextStream &stream)
     int hour    = str.left(intLength).toInt(&ok);              str.remove(0, intLength + 1);    if(!ok) throw std::invalid_argument("File is broken");
     int minute  = str.left(intLength).toInt(&ok);              str.remove(0, intLength);        if(!ok) throw std::invalid_argument("File is broken");
     double second  = str.left(floatLength).toDouble(&ok);      str.remove(0, floatLength);      if(!ok) throw std::invalid_argument("File is broken");
-    QDate date; date.setDate(year, month, day); date = date.addYears(2000);
+    int century = QDate::currentDate().year();
+    century /= 100;
+    century *= 100;
+
+    QDate date; date.setDate(year, month, day); date = date.addYears(century);
     QTime time; time.setHMS(hour, minute, second, (second - std::floor(second)) * 1000);
     result->TOC.setDate(date);
     result->TOC.setTime(time);

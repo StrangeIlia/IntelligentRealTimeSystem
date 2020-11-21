@@ -62,22 +62,26 @@ RecieverPosition *RecieverPositionCalculator::calculate(ObservationData *observ,
         correcntedLongitude(calculated, message);
         satellitePosition(calculated);
 
-        double offset = data->emissionData->correctedTime;
+        double tk = message->TOC.msecsTo(observ->dateTime);
+        tk /= 1000;
+        tk -= dtime;
+
+        double offset = tk;
         offset *= message->timeShiftAcceleration;
         offset += message->timeShiftVelocity;
-        offset *= data->emissionData->correctedTime;
+        offset *= tk;
         offset += message->timeShift;
-        double dTR = std::sqrt(message->semiMajorAxis);
-        dTR *= std::sin(data->emissionData->eccentricAnomaly);
+        double dTR = -4.44280763e-10;
         dTR *= message->eccentricity;
-        dTR *= -4.4428076331e-10;
+        dTR *= std::sqrt(message->semiMajorAxis);
+        dTR *= std::sin(data->emissionData->eccentricAnomaly);
+
         offset += dTR;
         offset -= message->TGD;
 
         /// Вычисляем уточненную псевдодальность
         data->pseudorangeCorrected = data->pseudorange;
-        data->pseudorangeCorrected -= offset * c;
-
+        data->pseudorangeCorrected += offset * c;
 
         return data;
     };
@@ -95,7 +99,7 @@ RecieverPosition *RecieverPositionCalculator::calculate(ObservationData *observ,
     }
 
 
-    double eps = 0.1;
+    double eps = 1e-7;
     double dr = std::numeric_limits<double>::max();
 
     MatrixOnRow<double> position(4, 1);
@@ -118,15 +122,7 @@ RecieverPosition *RecieverPositionCalculator::calculate(ObservationData *observ,
     MatrixOnRow<double> JT_J;
     MatrixOnRow<double> INV_J;
 
-
-
     while(dr > eps) {
-        double lastVectorLength = 0;
-        lastVectorLength += std::pow(position.cell(0, 0), 2);
-        lastVectorLength += std::pow(position.cell(1, 0), 2);
-        lastVectorLength += std::pow(position.cell(2, 0), 2);
-        lastVectorLength  = std::sqrt(lastVectorLength);
-
         for(int i = 0; i != satellitesInfo.size(); ++i) {
             auto data = satellitesInfo[i];
             double dx = position.cell(0, 0) - data->emissionData->satellitePosX;
@@ -142,6 +138,15 @@ RecieverPosition *RecieverPositionCalculator::calculate(ObservationData *observ,
             derivative.setCell(i, 3, c);
 
             difference(i, 0) = vectorLength + position.cell(3, 0) * c - data->pseudorangeCorrected;
+
+            //// это не относится к расчетам
+//            dx = -2407751.000000 - data->emissionData->satellitePosX;
+//            dy = -4706536.650000 - data->emissionData->satellitePosY;
+//            dz =  3557571.410000 - data->emissionData->satellitePosZ;
+//            vectorLength = std::sqrt(std::pow(dx, 2) + std::pow(dy, 2) + std::pow(dz, 2));
+//            double test = vectorLength + position.cell(3, 0) * c - data->pseudorangeCorrected;
+//            test += 0;
+//            test -= 0;
         }
 
         for(int i = 0; i != derivative.rows(); ++i) {
@@ -156,12 +161,10 @@ RecieverPosition *RecieverPositionCalculator::calculate(ObservationData *observ,
         MatrixOperations::mult(dPosition, INV_J, difference);
         MatrixOperations::sub(position, dPosition);
 
-        double newVectorLength = 0;
-        newVectorLength += std::pow(position.cell(0, 0), 2);
-        newVectorLength += std::pow(position.cell(1, 0), 2);
-        newVectorLength += std::pow(position.cell(2, 0), 2);
-        newVectorLength  = std::sqrt(newVectorLength);
-        dr = std::abs(lastVectorLength - newVectorLength);
+        dr  = std::pow(dPosition.cell(0, 0), 2);
+        dr += std::pow(dPosition.cell(1, 0), 2);
+        dr += std::pow(dPosition.cell(2, 0), 2);
+        dr  = std::sqrt(dr);
     }
 
     RecieverPosition *result = new RecieverPosition;
@@ -178,7 +181,7 @@ RecieverPosition *RecieverPositionCalculator::calculate(ObservationData *observ,
 
 RecieverPosition *RecieverPositionCalculator::calculate(RecieverData *reciever, SatelliteMessagesContainer *container) {
     class Enumerator {
-        int i = 0;
+        int i = -1;
         RecieverData *reciever;
     public:
         Enumerator(RecieverData *reciever) {
@@ -186,14 +189,16 @@ RecieverPosition *RecieverPositionCalculator::calculate(RecieverData *reciever, 
         }
 
         void reset() {
-            i = 0;
+            i = -1;
         }
 
         int next() {
-            for(; i != reciever->observations.size(); ++i) {
+            ++i;
+            while(i < reciever->observations.size()) {
                 if(reciever->observations[i]->gps.size() > 4) {
                     return i;
                 }
+                ++i;
             }
             return -1;
         }

@@ -139,7 +139,8 @@ RecieverData *ParserOfObservationData::convertStream(QTextStream &stream) {
             ++satellitNumber;
 
             Satellite satellite;
-            satellite.type = str.left(1).front().digitValue(); str.remove(0, 1);
+            auto stdStr = str.left(1).toStdString();
+            satellite.type = stdStr.front(); str.remove(0, 1);
             satellite.number = str.left(2).toInt(&ok); if(!ok) std::invalid_argument("File is broken"); str.remove(0, 2);
             satellits.append(satellite);
         }
@@ -156,7 +157,7 @@ RecieverData *ParserOfObservationData::convertStream(QTextStream &stream) {
             }
 
             /// Можно было бы считать все спутники, но зачем хд
-            if(hasData && satellits[i].type != 'G')  {
+            if(hasData && satellits[i].type == 'G')  {
                 data->gps[satellits[i].number] = row;
             }
         }
