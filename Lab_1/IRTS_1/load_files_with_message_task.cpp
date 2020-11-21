@@ -1,4 +1,4 @@
-#include "load_files_with_message_stask.h"
+#include "load_files_with_message_task.h"
 
 LoadFilesWithMessagesTask::LoadFilesWithMessagesTask(QString fileName, QObject *parent) : QObject(parent) {
     setAutoDelete(false);
