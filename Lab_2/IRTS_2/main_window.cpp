@@ -121,7 +121,7 @@ void MainWindow::calculateAllData(bool /*ignored*/) {
 
 void MainWindow::calculateSelectedDateTime(bool /*ignored*/) {
     QDateTime datetime = ui->dateTimeEdit->dateTime();
-    PositionCalculator calculator(messagesContainer);
+    SatellitPositionCalculator calculator(messagesContainer);
     int satelliteNumber = ui->satelliteNumber->value();
     auto data = calculator.calculate(satelliteNumber, datetime);
     if(data == nullptr) {

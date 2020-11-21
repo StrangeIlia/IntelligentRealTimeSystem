@@ -13,7 +13,7 @@
 #include "dialog_processing.h"
 #include "load_files_with_ephemeris_task.h"
 #include "load_files_with_message_task.h"
-#include "satellite/position_calculator.h"
+#include "satellite/satellite_position_calculator.h"
 #include "satellite/ephemeris_container.h"
 
 QT_BEGIN_NAMESPACE

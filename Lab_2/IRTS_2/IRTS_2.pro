@@ -21,14 +21,16 @@ SOURCES += \
     dialog_processing.cpp \
     load_files_with_ephemeris_task.cpp \
     load_files_with_message_task.cpp \
+    parser_of_observation_data.cpp \
     satellite/calculation.cpp \
     main.cpp \
     main_window.cpp \
     parser_ephemeris.cpp \
     parser_of_navigation_messages.cpp \
     satellite/ephemeris_container.cpp \
-    satellite/position_calculator.cpp \
-    satellite/satellite_messages_container.cpp
+    satellite/reciever_position_calculator.cpp \
+    satellite/satellite_messages_container.cpp \
+    satellite/satellite_position_calculator.cpp
 
 HEADERS += \
     calculate_task.h \
@@ -36,6 +38,7 @@ HEADERS += \
     dialog_processing.h \
     load_files_with_ephemeris_task.h \
     load_files_with_message_task.h \
+    parser_of_observation_data.h \
     satellite/calculation.h \
     satellite/ephemeris.h \
     satellite/ephemeris_container.h \
@@ -43,8 +46,10 @@ HEADERS += \
     main_window.h \
     parser_ephemeris.h \
     parser_of_navigation_messages.h \
-    satellite/position_calculator.h \
-    satellite/satellite_messages_container.h
+    satellite/observation_data.h \
+    satellite/reciever_position_calculator.h \
+    satellite/satellite_messages_container.h \
+    satellite/satellite_position_calculator.h
 
 FORMS += \
     dialog_processing.ui \

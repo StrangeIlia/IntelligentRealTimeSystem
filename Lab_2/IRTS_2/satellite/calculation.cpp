@@ -100,5 +100,10 @@ void offset(ReceiverCalcData *result, SatelliteCalcData *satellite, NavigationMe
     result->offset += message->timeShiftVelocity;
     result->offset *= satellite->correctedTime;
     result->offset += message->timeShift;
-
+    double dTR = std::sqrt(message->semiMajorAxis);
+    dTR *= std::sin(satellite->eccentricAnomaly);
+    dTR *= message->eccentricity;
+    dTR *= -4.4428076331;
+    result->offset += dTR;
+    result->offset -= message->TGD;
 }

@@ -1,18 +1,18 @@
-#include "position_calculator.h"
+#include "satellite_position_calculator.h"
 
-PositionCalculator::PositionCalculator(SatelliteMessagesContainer *container) {
+SatellitPositionCalculator::SatellitPositionCalculator(SatelliteMessagesContainer *container) {
     _container = container;
 }
 
-SatelliteMessagesContainer *PositionCalculator::container() const {
+SatelliteMessagesContainer *SatellitPositionCalculator::container() const {
     return _container;
 }
 
-void PositionCalculator::setContainer(SatelliteMessagesContainer *container) {
+void SatellitPositionCalculator::setContainer(SatelliteMessagesContainer *container) {
     _container = container;
 }
 
-SatelliteCalcData *PositionCalculator::calculate(int satelliteNumber, QDateTime TPC) const {
+SatelliteCalcData *SatellitPositionCalculator::calculate(int satelliteNumber, QDateTime TPC) const {
     if(_container == nullptr) return nullptr;
     NavigationMessage *message = _container->nearbyMessage(satelliteNumber, TPC);
     if(message == nullptr) return nullptr;

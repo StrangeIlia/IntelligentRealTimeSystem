@@ -4,11 +4,11 @@
 #include "calculation.h"
 #include "satellite_messages_container.h"
 
-class PositionCalculator
+class SatellitePositionCalculator
 {
     SatelliteMessagesContainer *_container;
 public:
-    PositionCalculator(SatelliteMessagesContainer *container = nullptr);
+    SatellitePositionCalculator(SatelliteMessagesContainer *container = nullptr);
 
     SatelliteMessagesContainer *container() const;
     void setContainer(SatelliteMessagesContainer *container);
