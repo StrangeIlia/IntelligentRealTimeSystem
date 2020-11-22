@@ -14,8 +14,6 @@ class ParserOfObservationData
 public:
     ParserOfObservationData();
     RecieverData *convertStream(QTextStream &stream);
-private:
-
 };
 
 #endif // PARSEROFOBSERVATIONDATA_H

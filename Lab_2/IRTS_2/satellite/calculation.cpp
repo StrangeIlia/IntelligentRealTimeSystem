@@ -93,17 +93,3 @@ void satellitePosition(SatelliteCalcData *calculated) {
     calculated->satellitePosY += calculated->orbitalSatelliteY * cosRad * cosLong;
     calculated->satellitePosZ  = calculated->orbitalSatelliteY * sinRad;
 }
-
-
-void offset(ReceiverCalcData *result, SatelliteCalcData *satellite, NavigationMessage *message) {
-    result->offset  = message->timeShiftAcceleration * satellite->correctedTime;
-    result->offset += message->timeShiftVelocity;
-    result->offset *= satellite->correctedTime;
-    result->offset += message->timeShift;
-    double dTR = std::sqrt(message->semiMajorAxis);
-    dTR *= std::sin(satellite->eccentricAnomaly);
-    dTR *= message->eccentricity;
-    dTR *= -4.4428076331;
-    result->offset += dTR;
-    result->offset -= message->TGD;
-}

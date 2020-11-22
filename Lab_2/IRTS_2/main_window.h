@@ -16,6 +16,9 @@
 #include "satellite/satellite_position_calculator.h"
 #include "satellite/ephemeris_container.h"
 
+#include "parser_of_observation_data.h"
+#include "satellite/reciever_position_calculator.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -34,13 +37,20 @@ private slots:
     void calculateAllData(bool ignored);
     void calculateSelectedDateTime(bool ignored);
 
+    void loadFilesWithObservations(bool ignored);
+    void calculateRecieverPosition(bool ignored);
+
     void printString(QString html);
     void clearConsole(bool ignored);
 
-private:
+private:    
     Ui::MainWindow *ui;
     QThreadPool *threadPool;
     EphemerisContainer *ephemerisContainer;
-    SatelliteMessagesContainer *messagesContainer;
+    SatelliteMessagesContainer *messagesContainer;   
+
+    QVector<RecieverData*> recievers;
+
+    void addReciever(RecieverData *data);
 };
 #endif // MAINWINDOW_H

@@ -85,7 +85,7 @@
           <item>
            <widget class="QTabWidget" name="tabWidget">
             <property name="currentIndex">
-             <number>0</number>
+             <number>1</number>
             </property>
             <widget class="QWidget" name="tab">
              <attribute name="title">
@@ -173,7 +173,7 @@
                        <date>
                         <year>2015</year>
                         <month>12</month>
-                        <day>29</day>
+                        <day>28</day>
                        </date>
                       </property>
                       <property name="displayFormat">

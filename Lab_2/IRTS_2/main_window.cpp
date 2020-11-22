@@ -15,12 +15,18 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->calcSelected, &QPushButton::clicked, this, &MainWindow::calculateSelectedDateTime);
     connect(ui->filesWithMessages, &QPushButton::clicked, this, &MainWindow::loadFilesWithMessages);
     connect(ui->filesWithEphemeris, &QPushButton::clicked, this, &MainWindow::loadFilesWithEphemeris);
+
+    connect(ui->addReciever, &QPushButton::clicked, this, &MainWindow::loadFilesWithObservations);
+    connect(ui->calcPositionReciever, &QPushButton::clicked, this, &MainWindow::calculateRecieverPosition);
 }
 
 MainWindow::~MainWindow() {
     delete ui;
     delete messagesContainer;
     delete ephemerisContainer;
+    for(auto rec : recievers) {
+        delete rec;
+    }
 }
 
 void MainWindow::loadFilesWithMessages(bool /*ignored*/) {
@@ -167,6 +173,90 @@ void MainWindow::calculateSelectedDateTime(bool /*ignored*/) {
     createHtmlTask->deleteLater();
 }
 
+void MainWindow::loadFilesWithObservations(bool /*ignored*/) {
+    ParserOfObservationData parser;
+
+    QStringList listFileNames = QFileDialog::getOpenFileNames(this, tr("Выберите файл(-ы) для чтения"));
+    for(QString fileName : listFileNames) {
+        QFile file(fileName);
+        file.open(QFile::ReadOnly);
+        QTextStream stream(&file);
+        try {
+            auto data = parser.convertStream(stream);
+            data->recieverName = QFileInfo(file).fileName().left(4);
+            addReciever(data);
+        }  catch (...) {
+            QErrorMessage *message = new QErrorMessage(this);
+            message->setWindowTitle(tr("Ошибка при выполнении"));
+            message->showMessage(tr("Ошибка при чтении файла \"") + fileName + "\"", tr("Чтение файла"));
+        }
+        file.close();
+    }
+}
+
+void MainWindow::calculateRecieverPosition(bool /*ignored*/) {
+    QString reciever = ui->recievers->currentText();
+    RecieverData *data = nullptr;
+    for(auto d : recievers) {
+        if(d->recieverName == reciever) {
+            data = d;
+            break;
+        }
+    }
+
+    RecieverPositionCalculator calculator;
+    auto position = calculator.calculate(data, messagesContainer);
+
+    if(position == nullptr) {
+        printString("Не удалось найти координаты принимающей станции");
+    } else {
+        QString buffer;
+        QTextStream stream(&buffer);
+        stream.setRealNumberNotation(QTextStream::FixedNotation);
+        stream.setRealNumberPrecision(5);
+        stream << tr("Имя станции: ") << data->recieverName << "<br>";
+        stream << "<table border=\"1\" cellpadding=\"5\">";
+
+        stream << "<tr>";
+        stream << "<td colspan=\"4\" style=\"text-align: center;\">" << tr("Вычисленные значения") << "</td>";
+        stream << "<td colspan=\"3\" style=\"text-align: center;\">" << tr("Реальные значения") << "</td>";
+        stream << "<td colspan=\"3\" style=\"text-align: center;\">" << tr("Разница в показаниях") << "</td>";
+        stream << "</tr>";
+
+        stream << "<tr>";
+        stream << "<td style=\"text-align: center;\">X</td>";
+        stream << "<td style=\"text-align: center;\">Y</td>";
+        stream << "<td style=\"text-align: center;\">Z</td>";
+        stream << "<td style=\"text-align: center;\">dT</td>";
+        stream << "<td style=\"text-align: center;\">X</td>";
+        stream << "<td style=\"text-align: center;\">Y</td>";
+        stream << "<td style=\"text-align: center;\">Z</td>";
+        stream << "<td style=\"text-align: center;\">dX</td>";
+        stream << "<td style=\"text-align: center;\">dY</td>";
+        stream << "<td style=\"text-align: center;\">dZ</td>";
+        stream << "</tr>";
+
+        stream << "<tr>";
+        stream << "<td>" << position->x << "</td>";
+        stream << "<td>" << position->y << "</td>";
+        stream << "<td>" << position->z << "</td>";
+        stream << "<td>" << position->dt << "</td>";
+        stream << "<td>" << data->X << "</td>";
+        stream << "<td>" << data->Y << "</td>";
+        stream << "<td>" << data->Z << "</td>";
+        stream << "<td>" << std::abs(position->x - data->X) << "</td>";
+        stream << "<td>" << std::abs(position->y - data->Y) << "</td>";
+        stream << "<td>" << std::abs(position->z - data->Z) << "</td>";
+        stream << "</tr>";
+
+        stream << "</table>";
+
+        printString(buffer);
+
+        delete position;
+    }
+}
+
 void MainWindow::printString(QString html) {
     QString lastHtml;
     if(ui->console->document()->toPlainText() != "")
@@ -178,4 +268,20 @@ void MainWindow::printString(QString html) {
 
 void MainWindow::clearConsole(bool /*ignored*/) {
     ui->console->document()->setHtml("");
+}
+
+void MainWindow::addReciever(RecieverData *data) {
+    RecieverData *oldData = nullptr;
+    for(auto d : recievers) {
+        if(d->recieverName == data->recieverName) {
+            oldData = d;
+            break;
+        }
+    }
+    recievers.append(data);
+    if(oldData != nullptr) {
+        recievers.removeAll(oldData);
+    } else {
+        ui->recievers->addItem(data->recieverName);
+    }
 }

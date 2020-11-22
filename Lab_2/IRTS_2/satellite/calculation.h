@@ -25,10 +25,6 @@ struct SatelliteCalcData {
     double satellitePosZ; // Ysvk
 };
 
-struct ReceiverCalcData {
-    double offset;
-};
-
 void timeSinceTheBeginningOfTheWeek(SatelliteCalcData *calculated, NavigationMessage *message, QTime TPC);
 void timeSinceEra(SatelliteCalcData *calculated, NavigationMessage *message);
 void correctedAverageMovement(SatelliteCalcData *calculated, NavigationMessage *message);
@@ -42,7 +38,5 @@ void correctedInclinationAngle(SatelliteCalcData *calculated, NavigationMessage 
 void orbitalSatellitePosition(SatelliteCalcData *calculated);
 void correcntedLongitude(SatelliteCalcData *calculated, NavigationMessage *message);
 void satellitePosition(SatelliteCalcData *calculated);
-
-void offset(ReceiverCalcData *result, SatelliteCalcData *satellite, NavigationMessage *message);
 
 #endif // SATELLITE_H

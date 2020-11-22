@@ -138,15 +138,6 @@ RecieverPosition *RecieverPositionCalculator::calculate(ObservationData *observ,
             derivative.setCell(i, 3, c);
 
             difference(i, 0) = vectorLength + position.cell(3, 0) * c - data->pseudorangeCorrected;
-
-            //// это не относится к расчетам
-//            dx = -2407751.000000 - data->emissionData->satellitePosX;
-//            dy = -4706536.650000 - data->emissionData->satellitePosY;
-//            dz =  3557571.410000 - data->emissionData->satellitePosZ;
-//            vectorLength = std::sqrt(std::pow(dx, 2) + std::pow(dy, 2) + std::pow(dz, 2));
-//            double test = vectorLength + position.cell(3, 0) * c - data->pseudorangeCorrected;
-//            test += 0;
-//            test -= 0;
         }
 
         for(int i = 0; i != derivative.rows(); ++i) {
