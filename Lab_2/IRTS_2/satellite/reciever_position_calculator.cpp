@@ -89,7 +89,8 @@ RecieverPosition *RecieverPositionCalculator::calculate(ObservationData *observ,
     QVector<RequiredData*> satellitesInfo;
     for(auto iter = observ->gps.begin(); iter != observ->gps.end(); ++iter) {
         auto data = function(iter.key());
-        if(data != nullptr) satellitesInfo.append(data);
+        if(data != nullptr)
+            satellitesInfo.append(data);
     }
 
     if(satellitesInfo.size() < 4) {

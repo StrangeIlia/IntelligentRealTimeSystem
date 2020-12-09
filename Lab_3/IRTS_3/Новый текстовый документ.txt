@@ -1,0 +1,2 @@
+ HERS  A 13212M007 P Hailsham, England        0 20 10.5  50 52 02.3    76.5
+ HERT  A 13212M010 P Hailsham, England        0 20 03.6  50 52 02.9    83.3
